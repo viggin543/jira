@@ -1,7 +1,7 @@
 package common
 
 import (
-	"github.com/viggin543/jira_cli/common"
+	"github.com/viggin543/jira/cmd/common"
 	"io/ioutil"
 	"os"
 	"testing"

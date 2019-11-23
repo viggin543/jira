@@ -54,13 +54,13 @@ var epics_file = "~/.jira_epics"
 
 func init() {
 	rootCmd.AddCommand(createCmd)
-	createCmd.Flags().StringP("title", "t", "", "title of the ticket")
+	createCmd.Flags().StringP("title", "t", "", "title of the ticket (required)")
 	assertFlag("title")
-	createCmd.Flags().StringP("assignee", "a", "", "the assignee")
+	createCmd.Flags().StringP("assignee", "a", "", "the assignee (required)")
 	assertFlag("assignee")
-	createCmd.Flags().StringP("description", "d", "", "short description of the task")
+	createCmd.Flags().StringP("description", "d", "", "short description of the task (required)")
 	assertFlag("description")
-	createCmd.Flags().IntP("epic", "e", -1, "link to the epic task if exists")
+	createCmd.Flags().IntP("epic", "e", -1, "link to the epic task (optional)")
 }
 
 func assertFlag(name string) {
