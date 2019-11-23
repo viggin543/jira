@@ -60,7 +60,7 @@ func init() {
 	assertFlag("assignee")
 	createCmd.Flags().StringP("description", "d", "", "short description of the task (required)")
 	assertFlag("description")
-	createCmd.Flags().IntP("epic", "e", -1, "link to the epic task (optional)")
+	createCmd.Flags().IntP("epic", "e", 0, "link to the epic task (optional)")
 }
 
 func assertFlag(name string) {
