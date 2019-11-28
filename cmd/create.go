@@ -44,7 +44,9 @@ and optionally a link to an epic task`,
 			Epic:        epic,
 			Title:       title,
 			Description: description}
-		issue.withAssignee(assignee).Execute()
+		issue.
+			withAssignee(assignee).
+			Execute()
 	},
 }
 
@@ -95,7 +97,8 @@ func (t *createIssue) withAssignee(assignee string) *createIssue {
 }
 
 func (t *createIssue) Execute()  {
-	req := common.BuildPostRequest("/rest/api/2/issue/", t.postBody())
+	postBody := t.postBody()
+	req := common.BuildPostRequest("/rest/api/2/issue/", postBody)
 	body := common.Execute(req)
 	taskNumber := common.ParseToSting(body, "$.key")
 	createdTask := fmt.Sprintf("https://%s/browse/%s", domain, taskNumber)
@@ -111,11 +114,11 @@ func (t *createIssue) postBody() *bytes.Buffer {
 	"fields": {
 	   "project": {"key": "UD"},
 	   "summary": "%s",
-	   "Description": "%s",
+	   "description": "%s",
 	   "customfield_10064": {"value": "Backend"},
 		"customfield_10010":%d,
 	   "issuetype": {"name": "Task"},
-	   "Assignee": {"name":"%s"}
+	   "assignee": {"name":"%s"}
 		%s
 		}
 	}`,

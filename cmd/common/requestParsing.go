@@ -30,7 +30,7 @@ func ParseToSting(body []byte, jsonPath string) string {
 func JPathGet(body []byte, jsonPath string) interface{} {
 	var response interface{}
 	err := json.Unmarshal(body, &response)
-	PanicIfNonEmpty(err)
+	PanicIfNonEmpty(err, nil)
 	parsed, err := jsonpath.Read(response, jsonPath)
 	if err != nil {
 		fmt.Println(response)

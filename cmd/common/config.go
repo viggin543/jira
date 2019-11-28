@@ -2,13 +2,15 @@ package common
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
 	"os"
 )
 
-func PanicIfNonEmpty(err error) {
+func PanicIfNonEmpty(err error, response *http.Response) {
 	if err != nil {
-		panic(err)
+		fmt.Print(err,response)
+		os.Exit(1)
 	}
 }
 
