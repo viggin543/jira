@@ -18,6 +18,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"github.com/spf13/viper"
 	"github.com/viggin543/jira/cmd/common"
 
 	"github.com/spf13/cobra"
@@ -41,7 +42,6 @@ that are with status in: (To Do ,In Progress,Review)
 	},
 }
 
-var user, _, _ = common.Config()
 
 func init() {
 	rootCmd.AddCommand(listCmd)
@@ -52,6 +52,7 @@ func init() {
 
 func getIssues() *[]interface{} {
 	path := "/rest/api/2/search"
+	user := viper.GetString("jira_user")
 	body := fmt.Sprintf(`{"jql":
 									"Assignee = \"%s\" AND Status in (\"To Do\" ,\"In Progress\",\"Review\")",
 									"startAt":0,

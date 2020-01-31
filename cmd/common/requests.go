@@ -3,12 +3,12 @@ package common
 import (
 	"encoding/base64"
 	"fmt"
+	"github.com/spf13/viper"
 	"io"
 	"io/ioutil"
 	"net/http"
 )
 
-var user, pass, domain = Config()
 
 
 var client = &http.Client{}
@@ -36,6 +36,9 @@ func BuilGetRequest(path string) (*http.Request) {
 }
 
 func buildRequest(path string, method string, body io.Reader) *http.Request {
+	domain := viper.GetString("jira_domain")
+	user := viper.GetString("jira_user")
+	pass := viper.GetString("jira_pass")
 	url := fmt.Sprintf("https://%s%s", domain, path)
 	req, err := http.NewRequest(method, url, body)
 	PanicIfNonEmpty(err, nil)

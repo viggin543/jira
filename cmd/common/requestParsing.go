@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/yalp/jsonpath"
+	"net/http"
+	"os"
 )
 
 func ParseToSplitStr(body []byte, jsonPath string) []string {
@@ -39,6 +41,11 @@ func JPathGet(body []byte, jsonPath string) interface{} {
 	return parsed
 }
 
-
+func PanicIfNonEmpty(err error, response *http.Response) {
+	if err != nil {
+		fmt.Print(err,response)
+		os.Exit(1)
+	}
+}
 
 

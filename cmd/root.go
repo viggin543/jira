@@ -25,8 +25,11 @@ the cli requires the following env vars.
 export JIRA_USER="banana@opa.com"
 export JIRA_PASS="API_TOKEN_HERE"
 export JIRA_DOMAIN="opa.atlassian.net"
+export JIRA_PROJECT="UD"
 
-to create a token browse here:
+Or create the a config file in ~/.jira.yaml with the above keys if you dont want to export env vars
+
+To create a token browse here:
 https://id.atlassian.com/manage/api-tokens
 
 `,
@@ -57,6 +60,7 @@ func init() {
   // Cobra also supports local flags, which will only run
   // when this action is called directly.
   rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
 
   common.CreateIfNotExist(history_file)
   common.CreateIfNotExist(epics_file)

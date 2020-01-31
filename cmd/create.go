@@ -18,6 +18,7 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"github.com/spf13/viper"
 	"os"
 	"strings"
 
@@ -51,7 +52,7 @@ and optionally a link to an epic task`,
 	},
 }
 
-var _, _, domain = common.Config()
+
 var history_file = "~/.jira_tickets"
 var epics_file = "~/.jira_epics"
 
@@ -100,6 +101,7 @@ func (t *createIssue) Execute() {
 	req := common.BuildPostRequest("/rest/api/2/issue/", postBody)
 	body := common.Execute(req)
 	taskNumber := common.ParseToSting(body, "$.key")
+	domain := viper.GetString("jira_domain")
 	createdTask := fmt.Sprintf("https://%s/browse/%s", domain, taskNumber)
 
 	common.AppendToFile(history_file, createdTask)
@@ -108,9 +110,10 @@ func (t *createIssue) Execute() {
 
 func (t *createIssue) postBody() *bytes.Buffer {
 
+	project := viper.GetString("jira_project")
 	body := bytes.NewBuffer([]byte(fmt.Sprintf(`{
 	"fields": {
-	   "project": {"key": "UD"},
+	   "project": {"key": "%s"},
 	   "summary": "%s",
 	   "description": "%s",
 	   "customfield_10064": {"value": "Backend"},
@@ -120,6 +123,7 @@ func (t *createIssue) postBody() *bytes.Buffer {
 		%s
 		}
 	}`,
+		project,
 		t.Title,
 		t.Description,
 		GetActiveSprint().Id,
