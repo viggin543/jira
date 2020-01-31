@@ -15,8 +15,8 @@ var cfgFile string
 var rootCmd = &cobra.Command{
   Use:   "jira",
   Short: "Jira command line client",
-  Long: `Jira is super slow, especially creating task
-this client uses jira api in order to automate tasks
+  Long: `Jira is super slow, especially 4 creating tasks
+this client uses jira api in order to automate things
 its main function is to create tickets for current sprint
 with an assignee from you't team
 optionally related to some epic.
@@ -26,7 +26,7 @@ export JIRA_USER="banana@opa.com"
 export JIRA_PASS="API_TOKEN_HERE"
 export JIRA_DOMAIN="opa.atlassian.net"
 
-to create a token go here:
+to create a token browse here:
 https://id.atlassian.com/manage/api-tokens
 
 `,
@@ -58,7 +58,6 @@ func init() {
   // when this action is called directly.
   rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-  fmt.Println("init blat")
   common.CreateIfNotExist(history_file)
   common.CreateIfNotExist(epics_file)
 }
