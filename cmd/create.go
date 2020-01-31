@@ -18,9 +18,10 @@ package cmd
 import (
 	"bytes"
 	"fmt"
-	"github.com/viggin543/jira/cmd/common"
 	"os"
 	"strings"
+
+	"github.com/viggin543/jira/cmd/common"
 
 	"github.com/spf13/cobra"
 )
@@ -72,14 +73,12 @@ func assertFlag(name string) {
 	}
 }
 
-
 type createIssue struct {
 	Title       string
 	Assignee    string
 	Description string
-	Epic int
+	Epic        int
 }
-
 
 func (t *createIssue) withAssignee(assignee string) *createIssue {
 	team := NewListProjectTeamCommand().NoLogs().Execute()
@@ -90,23 +89,22 @@ func (t *createIssue) withAssignee(assignee string) *createIssue {
 		}
 	}
 	if t.Assignee == "" && assignee != "" {
-		fmt.Println("cant find assignee in team:",assignee)
+		fmt.Println("cant find assignee in team:", assignee)
 		os.Exit(1)
 	}
 	return t
 }
 
-func (t *createIssue) Execute()  {
+func (t *createIssue) Execute() {
 	postBody := t.postBody()
 	req := common.BuildPostRequest("/rest/api/2/issue/", postBody)
 	body := common.Execute(req)
 	taskNumber := common.ParseToSting(body, "$.key")
 	createdTask := fmt.Sprintf("https://%s/browse/%s", domain, taskNumber)
 
-	common.AppendToFile(history_file,createdTask)
+	common.AppendToFile(history_file, createdTask)
 	fmt.Println(createdTask)
 }
-
 
 func (t *createIssue) postBody() *bytes.Buffer {
 
@@ -137,5 +135,3 @@ func (t *createIssue) getEpicLink() string {
 		return ""
 	}
 }
-
-

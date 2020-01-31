@@ -2,9 +2,11 @@ package common
 
 import (
 	"fmt"
+	"github.com/mitchellh/go-homedir"
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 )
 
 func AppendToFile(fileame string, text string){
@@ -29,4 +31,18 @@ func PrintFileContent(fileame string) *[]byte {
 	fmt.Println(b)
 	return &b
 
+}
+
+func CreateIfNotExist(filename string) {
+	home, _ := homedir.Dir()
+	toCreate := strings.Replace(filename, "~", home, 1)
+	_,e := os.Stat(toCreate)
+	if os.IsNotExist(e) {
+		fmt.Println("init ", toCreate)
+		file, err := os.Create(toCreate)
+		if err != nil {
+			fmt.Println("failed initializing ", toCreate, err.Error())
+		}
+		file.Close()
+	}
 }

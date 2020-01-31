@@ -27,7 +27,7 @@ var historyCmd = &cobra.Command{
 	Short: "print recently created tickets",
 	Long: `prints recent tickets, every ticket that was created is saved in ~/.jira_tickets`,
 	Run: func(cmd *cobra.Command, args []string) {
-		common.PrintFileContent(epics_file)
+		common.PrintFileContent(history_file)
 	},
 }
 

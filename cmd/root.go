@@ -1,44 +1,35 @@
-/*
-Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
   "fmt"
+  "github.com/viggin543/jira/cmd/common"
   "os"
   "github.com/spf13/cobra"
-
   homedir "github.com/mitchellh/go-homedir"
   "github.com/spf13/viper"
-
 )
 
 
 var cfgFile string
-
-
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
   Use:   "jira",
-  Short: "A brief description of your application",
-  Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+  Short: "Jira command line client",
+  Long: `Jira is super slow, especially creating task
+this client uses jira api in order to automate tasks
+its main function is to create tickets for current sprint
+with an assignee from you't team
+optionally related to some epic.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+the cli requires the following env vars.
+export JIRA_USER="banana@opa.com"
+export JIRA_PASS="API_TOKEN_HERE"
+export JIRA_DOMAIN="opa.atlassian.net"
+
+to create a token go here:
+https://id.atlassian.com/manage/api-tokens
+
+`,
   // Uncomment the following line if your bare application
   // has an action associated with it:
   //	Run: func(cmd *cobra.Command, args []string) { },
@@ -66,6 +57,10 @@ func init() {
   // Cobra also supports local flags, which will only run
   // when this action is called directly.
   rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+  fmt.Println("init blat")
+  common.CreateIfNotExist(history_file)
+  common.CreateIfNotExist(epics_file)
 }
 
 
