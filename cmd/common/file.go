@@ -22,7 +22,7 @@ func AppendToFile(fileame string, text string){
 }
 
 func PrintFileContent(fileame string) *[]byte {
-	file, err := os.Open(fileame)
+	file, err := os.Open(ExpandHomeDir(fileame))
 	if err != nil {
 		log.Fatal(err)
 	}
