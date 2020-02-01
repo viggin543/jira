@@ -34,10 +34,9 @@ func PrintFileContent(fileame string) *[]byte {
 }
 
 func CreateIfNotExist(filename string) {
-	home, _ := homedir.Dir()
-	toCreate := strings.Replace(filename, "~", home, 1)
-	_,e := os.Stat(toCreate)
-	if os.IsNotExist(e) {
+	toCreate := ExpandHomeDir(filename)
+	isNotExists := IsNotExist(filename)
+	if isNotExists {
 		fmt.Println("init ", toCreate)
 		file, err := os.Create(toCreate)
 		if err != nil {
@@ -45,4 +44,17 @@ func CreateIfNotExist(filename string) {
 		}
 		file.Close()
 	}
+}
+
+func IsNotExist(filename string)  bool {
+	toCreate := ExpandHomeDir(filename)
+	_, e := os.Stat(toCreate)
+	isNotExists := os.IsNotExist(e)
+	return  isNotExists
+}
+
+func ExpandHomeDir(filename string)  string {
+	home, _ := homedir.Dir()
+	toCreate := strings.Replace(filename, "~", home, 1)
+	return toCreate
 }
