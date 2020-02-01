@@ -7,11 +7,13 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/viggin543/jira/cmd/common"
+	"strings"
 )
 
 type Task struct {
 	Id    string `json:"id"`
 	Title string `json:"title"`
+	Status string `json:"status"`
 }
 
 var tasksCmd = &cobra.Command{
@@ -54,11 +56,21 @@ func parseResp(respBody []byte) []Task {
 	tasks := make([]Task, len(issues))
 	for i, e := range issues {
 		task := Task{
-			Id:    e.(map[string]interface{})["key"].(string),
-			Title: e.(map[string]interface{})["fields"].(map[string]interface{})["summary"].(string)}
+			Id:     at("key", e),
+			Title:  at("fields.summary", e),
+			Status: at("fields.status.statusCategory.name", e),
+		}
 		tasks[i] = task
 	}
 	return tasks
+}
+
+func at(path string, json interface{}) string {
+	var next interface {} = json.(map[string]interface{})
+	for _,e := range strings.Split(path,".") {
+		next = next.(map[string]interface{})[e]
+	}
+	return next.(string)
 }
 
 func init() {
