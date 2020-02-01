@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 echo "uploading binary to s3"
 
-find . -name "*_test.go" -exec go test {} \;
-[[ $? == 1 ]] && exit 1
-go build
-[[ $? == 1 ]] && echo "build failed" && exit 1
+go test ./... && go build || echo "build failed" && exit 1
+
 
 mkdir target
 mv jira target && cp completions.bash target
