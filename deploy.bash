@@ -14,9 +14,10 @@ current=`pwd`
 cd ~/personal_projects/opentikva/
 sed -i .bak "s/sha256.*/sha256 \"$checksum\"/"  ./Jira.rb
 rm *.bak
-git commit -am "bumping jira cli version from $oldChecksum to $checksum" && git push origin master
-[[ $? == 1 ]] && exit 1
+git commit -am "bumping jira cli version from $oldChecksum to $checksum" && git push origin master &
+push_pid=$!
 cd $current
 aws s3 --profile personal_s3 cp jira s3://opentikva/ --acl public-read
+wait $push_pid
 brew update
 brew reinstall jira
