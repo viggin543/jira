@@ -32,7 +32,7 @@ var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "create a jira task",
 	Long: `creates a jira task in current sprint
-assigned to assignee, with title and description
+assigned to assignee, with Title and description
 and optionally a link to an epic task`,
 	Run: func(cmd *cobra.Command, args []string) {
 		epic, _ := cmd.Flags().GetInt("epic")
@@ -40,7 +40,7 @@ and optionally a link to an epic task`,
 		common.AppendToFile(epics_file, string(epic))
 
 		assignee, _ := cmd.Flags().GetString("assignee")
-		title, _ := cmd.Flags().GetString("title")
+		title, _ := cmd.Flags().GetString("Title")
 		description, _ := cmd.Flags().GetString("description")
 		issue := createIssue{
 			Epic:        epic,
@@ -58,8 +58,8 @@ var epics_file = "~/.jira_epics"
 
 func init() {
 	rootCmd.AddCommand(createCmd)
-	createCmd.Flags().StringP("title", "t", "", "title of the ticket (required)")
-	assertFlag("title")
+	createCmd.Flags().StringP("Title", "t", "", "Title of the ticket (required)")
+	assertFlag("Title")
 	createCmd.Flags().StringP("assignee", "a", "", "the assignee (required)")
 	assertFlag("assignee")
 	createCmd.Flags().StringP("description", "d", "", "short description of the task (required)")

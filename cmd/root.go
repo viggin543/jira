@@ -29,7 +29,7 @@ export JIRA_PROJECT="UD"
 Or create the a config file in ~/.jira.yaml with the above keys if you dont want to export env vars
 
 To create a token browse here:
-https://id.atlassian.com/manage/api-tokens
+https://Id.atlassian.com/manage/api-tokens
 
 `,
 	// Uncomment the following line if your bare application
@@ -71,7 +71,7 @@ func createConfigTemplate() {
 	if common.IsNotExist(config_path) {
 		ioutil.WriteFile(common.ExpandHomeDir(config_path), []byte(`
 JIRA_USER: "some@ourbond.com"
-JIRA_PASS: "api-token-from -> https://id.atlassian.com/manage/api-tokens"
+JIRA_PASS: "api-token-from -> https://Id.atlassian.com/manage/api-tokens"
 JIRA_DOMAIN: "some.atlassian.net"
 JIRA_PROJECT: "some-project-name"
 `), 0644)

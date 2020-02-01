@@ -44,7 +44,7 @@ func init() {
 
 
 type Sprint struct {
-	Id int `json:id`
+	Id int `json:Id`
 	Self string `json:self`
 	State string `json:state`
 	Name string `json:name`
