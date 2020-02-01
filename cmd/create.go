@@ -87,6 +87,7 @@ func (t *createIssue) withAssignee(assignee string) *createIssue {
 		if strings.Contains(member, assignee) {
 			t.Assignee = member
 			break
+
 		}
 	}
 	if t.Assignee == "" && assignee != "" {
