@@ -16,6 +16,11 @@ sed -i .bak "s/sha256.*/sha256 \"$checksum\"/"  ./Jira.rb
 rm *.bak
 git commit -am "bumping jira cli version from $oldChecksum to $checksum" && git push origin master
 cd $current
-aws s3 --profile personal_s3 cp jira s3://opentikva/ --acl public-read
+
+mkdir target
+mv jira target && cp completions.bash target
+tar -zcvf jira_cli.tar.gz target
+
+aws s3 --profile personal_s3 cp jira_cli.tar.gz s3://opentikva/ --acl public-read
 brew update
 brew reinstall jira
