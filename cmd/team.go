@@ -57,7 +57,7 @@ func (t *listProjectTeam) Execute() []string {
 	project := viper.GetString("jira_project")
 	req := common.BuilGetRequest(fmt.Sprintf("/rest/api/2/user/assignable/search?project=%s",project))
 	body := common.Execute(req)
-	jiraUsers := common.ParseToSplitStr(body, "$..name")
+	jiraUsers := common.ParseToSplitStr(body, "$..displayName")
 	t.print(jiraUsers)
 	return jiraUsers
 }
