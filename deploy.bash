@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 echo "uploading binary to s3"
 
-go test ./... && go build || echo "build failed" && exit 1
+go test ./... && go build || ≠(echo "build failed" && exit 1)
 
 
 mkdir target
@@ -24,3 +24,5 @@ cd $current
 aws s3 --profile personal_s3 cp jira_cli.tar.gz s3://opentikva/ --acl public-read
 brew update
 brew reinstall jira
+rm -rf target
+rm -rf jira_cli.tar.gz
