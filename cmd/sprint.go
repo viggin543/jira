@@ -57,7 +57,7 @@ type Sprint struct {
 
 func (s *Sprint) Print(){
 	fmt.Println(s.Name)
-	fmt.Println("State",s.State)
+	fmt.Println("Status",s.State)
 	fmt.Println(int(time.Until(s.EndDate).Hours()/24),"days left")
 	fmt.Println(int(time.Since(s.StartDate).Hours()/24),"days since start date")
 }

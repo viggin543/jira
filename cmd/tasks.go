@@ -76,4 +76,5 @@ func at(path string, json interface{}) string {
 func init() {
 	rootCmd.AddCommand(tasksCmd)
 	tasksCmd.Flags().BoolP("in-progress", "i", false, "in progress only")
+	//todo: add different filters, backlog,todo,done
 }

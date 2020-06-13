@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"
 	"os"
@@ -40,12 +41,14 @@ and optionally a link to an epic task`,
 		common.AppendToFile(epics_file, string(epic))
 
 		assignee, _ := cmd.Flags().GetString("assignee")
-		title, _ := cmd.Flags().GetString("Title")
+		title, _ := cmd.Flags().GetString("title")
 		description, _ := cmd.Flags().GetString("description")
+		status, _ := cmd.Flags().GetString("status")
 		issue := createIssue{
 			Epic:        epic,
 			Title:       title,
-			Description: description}
+			Description: description,
+			Status:      status}
 		issue.
 			withAssignee(assignee).
 			Execute()
@@ -58,27 +61,25 @@ var epics_file = "~/.jira_epics"
 
 func init() {
 	rootCmd.AddCommand(createCmd)
-	createCmd.Flags().StringP("Title", "t", "", "Title of the ticket (required)")
-	assertFlag("Title")
-	createCmd.Flags().StringP("assignee", "a", "", "the assignee (required)")
-	assertFlag("assignee")
+	createCmd.Flags().StringP("title", "t", "", "title of the ticket (required)")
+	common.AssertFlag(createCmd,"title")
+	defaultAssignee := viper.GetString("default_assignee")
+	createCmd.Flags().StringP("assignee", "a", defaultAssignee, "the assignee (required)")
 	createCmd.Flags().StringP("description", "d", "", "short description of the task (required)")
-	assertFlag("description")
+	common.AssertFlag(createCmd,"description")
 	createCmd.Flags().IntP("epic", "e", 0, "link to the epic task (optional)")
+	defaultState := viper.GetString("default_status")
+	createCmd.Flags().StringP("status", "s", defaultState, "the initial state of the task")
 }
 
-func assertFlag(name string) {
-	if err := createCmd.MarkFlagRequired(name); err != nil {
-		fmt.Println("missing " + name + " flag")
-		os.Exit(1)
-	}
-}
+
 
 type createIssue struct {
-	Title       string
-	Assignee    string
-	Description string
-	Epic        int
+	Title       string `json:title`
+	Assignee    string `json:assignee`
+	Description string `json:desc`
+	Epic        int    `json:epic`
+	Status      string
 }
 
 func (t *createIssue) withAssignee(assignee string) *createIssue {
@@ -102,10 +103,16 @@ func (t *createIssue) Execute() {
 	body := common.Execute(req)
 	taskNumber := common.ParseToSting(body, "$.key")
 	domain := viper.GetString("jira_domain")
-	createdTask := fmt.Sprintf("https://%s/browse/%s", domain, taskNumber)
-
-	common.AppendToFile(history_file, createdTask)
+	createdTask := t.saveInHistory(domain, taskNumber)
 	fmt.Println(createdTask)
+	TransitionTo(taskNumber,t.Status)
+}
+
+func (t *createIssue) saveInHistory( domain string, taskNumber string) string {
+	createCmdJson, _ := json.Marshal(t)
+	createdTask := fmt.Sprintf("https://%s/browse/%s - %s", domain, taskNumber, string(createCmdJson))
+	common.AppendToFile(history_file, createdTask)
+	return createdTask
 }
 
 func (t *createIssue) postBody() *bytes.Buffer {
