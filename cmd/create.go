@@ -98,8 +98,7 @@ func (t *createIssue) withAssignee(assignee string) *createIssue {
 }
 
 func (t *createIssue) Execute() {
-	postBody := t.postBody()
-	req := common.BuildPostRequest("/rest/api/2/issue/", postBody)
+	req := common.BuildPostRequest("/rest/api/2/issue/", t.postBody())
 	body := common.Execute(req)
 	taskNumber := common.ParseToSting(body, "$.key")
 	domain := viper.GetString("jira_domain")
@@ -112,7 +111,7 @@ func (t *createIssue) Execute() {
 func (t *createIssue) postBody() *bytes.Buffer {
 
 	project := viper.GetString("jira_project")
-	body := bytes.NewBuffer([]byte(fmt.Sprintf(`{
+	str := fmt.Sprintf(`{
 	"fields": {
 	   "project": {"key": "%s"},
 	   "summary": "%s",
@@ -129,7 +128,8 @@ func (t *createIssue) postBody() *bytes.Buffer {
 		t.Description,
 		GetActiveSprint().Id,
 		t.Assignee,
-		t.getEpicLink())))
+		t.getEpicLink())
+	body := bytes.NewBuffer([]byte(str))
 	return body
 }
 

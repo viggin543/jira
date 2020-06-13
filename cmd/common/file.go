@@ -10,7 +10,7 @@ import (
 )
 
 func AppendToFile(fileame string, text string){
-	f, err := os.OpenFile(fileame,
+	f, err := os.OpenFile(ExpandHomeDir(fileame),
 		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println(err)
@@ -28,7 +28,7 @@ func PrintFileContent(fileame string) *[]byte {
 	}
 	defer file.Close()
 	b, _ := ioutil.ReadAll(file)
-	fmt.Println(b)
+	fmt.Println(string(b))
 	return &b
 
 }
