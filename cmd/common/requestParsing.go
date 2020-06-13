@@ -8,15 +8,22 @@ import (
 	"os"
 )
 
-func ParseToSplitStr(body []byte, jsonPath string) []string {
+func ParseToSplitStr(body []byte, jsonPath string) [][2]string {
 	parsed := JPathGet(body, jsonPath)
 	return toSplitStr(parsed)
 }
 
-func toSplitStr(parsed interface{}) []string {
-	result := []string{}
-	for _, v := range parsed.([]interface{}) {
-		result = append(result, v.(string))
+func toSplitStr(parsed interface{}) [][2]string {
+	result := [][2]string{}
+	var user [2]string
+	for idx, v := range parsed.([]interface{}) {
+		if idx % 2 == 0 {
+			user = [2]string{}
+			user[0] = v.(string)
+		} else {
+			user[1] = v.(string)
+			result = append(result, user)
+		}
 	}
 	return result
 }

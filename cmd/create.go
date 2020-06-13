@@ -84,8 +84,8 @@ type createIssue struct {
 func (t *createIssue) withAssignee(assignee string) *createIssue {
 	team := NewListProjectTeamCommand().NoLogs().Execute()
 	for _, member := range team {
-		if strings.Contains(member, assignee) {
-			t.Assignee = member
+		if strings.Contains(member[0], assignee) {
+			t.Assignee = member[1]
 			break
 
 		}
@@ -119,7 +119,7 @@ func (t *createIssue) postBody() *bytes.Buffer {
 	   "customfield_10064": {"value": "Backend"},
 		"customfield_10010":%d,
 	   "issuetype": {"name": "Task"},
-	   "assignee": {"name":"%s"}
+	   "assignee": {"accountId":"%s"}
 		%s
 		}
 	}`,

@@ -17,10 +17,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/viggin543/jira/cmd/common"
-
-	"github.com/spf13/cobra"
 )
 
 // teamCmd represents the team command
@@ -53,21 +52,21 @@ func (t *listProjectTeam) NoLogs() *listProjectTeam {
 	return t
 }
 
-func (t *listProjectTeam) Execute() []string {
+func (t *listProjectTeam) Execute() [][2]string {
 	project := viper.GetString("jira_project")
 	req := common.BuilGetRequest(fmt.Sprintf("/rest/api/2/user/assignable/search?project=%s",project))
 	body := common.Execute(req)
-	jiraUsers := common.ParseToSplitStr(body, "$..displayName")
+	jiraUsers := common.ParseToSplitStr(body, "$..[displayName,accountId]")
 	t.print(jiraUsers)
 	return jiraUsers
 }
 
-func (t *listProjectTeam) print(jiraUsers []string) {
+
+func (t *listProjectTeam) print(jiraUsers [][2]string) {
 	if !t.quiet {
 		for _, user := range jiraUsers {
 			fmt.Println(user)
 		}
 	}
-
 }
 
