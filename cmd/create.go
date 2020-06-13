@@ -84,7 +84,7 @@ type createIssue struct {
 func (t *createIssue) withAssignee(assignee string) *createIssue {
 	team := NewListProjectTeamCommand().NoLogs().Execute()
 	for _, member := range team {
-		if strings.Contains(member[0], assignee) {
+		if strings.Contains(strings.ToLower(member[0]), strings.ToLower(assignee)) {
 			t.Assignee = member[1]
 			break
 
