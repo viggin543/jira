@@ -31,4 +31,5 @@ rm -rf jira_cli.tar.gz
 
 # todo: add an assign issue option
 # todo: allow to set state on creation like todo
+# todo: dry run flag
 # todo: movie issue to other state ( code-review )
