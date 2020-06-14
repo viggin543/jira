@@ -45,7 +45,6 @@ var transitionCmd = &cobra.Command{
 }
 
 func TransitionTo(ticket string, state string) {
-	//todo: insert ud if needed
 	if !strings.Contains(strings.ToLower(ticket), "ud-") {
 		panic("ticket number must be of the following format: UD-123")
 	}

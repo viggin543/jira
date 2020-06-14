@@ -30,6 +30,4 @@ rm -rf jira_cli.tar.gz
 # curl 'https://tg17home.atlassian.net/rest/api/3/issue/UD-14919/assignee?sessionId=4fa4ab32-9b1d-457d-ba49-c4697bc8a2f7' -X PUT --data '{"accountId":"5d6232fd72eab30b725eaaf7"}'
 
 # todo: add an assign issue option
-# todo: allow to set state on creation like todo
 # todo: dry run flag
-# todo: movie issue to other state ( code-review )
